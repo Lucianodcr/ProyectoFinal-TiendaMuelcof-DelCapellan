@@ -6,6 +6,7 @@ import { TbPerfume } from "react-icons/tb";
 import { GiDelicatePerfume } from "react-icons/gi";
 import { AiOutlineMail } from "react-icons/ai";
 import { SlLogout } from "react-icons/sl";
+import { FaCartShopping } from "react-icons/fa6";
 
 
 const SideBar = (props) => {
@@ -16,7 +17,7 @@ const SideBar = (props) => {
       className={`bg-[#afddb8ff] transition-all ${showMenu ? "left-0" : "-left-full"
       } lg:left-0 z-50 fixed top-0 w-28 h-full flex flex-col justify-between py-3 rounded-tr-xl rounded-br-xl`}
     >
-      <div>
+      <div className="w-30 h-30">
         <h1 className="text-center m-1">
           <img
             className="flex items-center justify-center rounded-es-full rounded-se-full bg-white"
@@ -52,6 +53,14 @@ const SideBar = (props) => {
 
           <li className="hover:bg-white p-4 rounded-tl-xl rounded-bl-xl group transition-colors">
             <NavLink to="/"
+              className="group-hover:text-black p-4 flex justify-center rounded-xl text-white transition-colors"
+            >
+              <FaCartShopping className="text-3xl" />
+            </NavLink>
+          </li>
+
+          <li className="hover:bg-white p-4 rounded-tl-xl rounded-bl-xl group transition-colors">
+            <NavLink to="/"
               
               className="group-hover:text-black p-4 flex justify-center rounded-xl text-white transition-colors"
             >
@@ -65,7 +74,7 @@ const SideBar = (props) => {
           <li className="hover:bg-white p-4 rounded-tl-xl rounded-bl-xl group transition-colors">
             <NavLink to="/"
               
-              className="group-hover:text-black p-4 flex justify-center rounded-xl text-white transition-colors"
+              className="group-hover:text-black flex justify-center rounded-xl text-white transition-colors"
             >
               <SlLogout className="text-2xl" />
             </NavLink>
