@@ -1,13 +1,18 @@
 import { useState } from "react";
 import ItemCount from "../ItemCount/ItemCount";
 import { Link } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
+import { useContext } from "react";
 
 const ItemDetail = ({ id, nombre, precio, img, stock }) => {
   const [addStock, setAddStock] = useState(0);
 
+  const { addProducts } = useContext(CartContext);
+
   const amountStock = (amount) => {
     setAddStock(amount);
-    console.log("Productos agregados: " + amount);
+    const item = { id, nombre, precio };
+    addProducts(item, amount);
   };
 
   return (
@@ -24,7 +29,7 @@ const ItemDetail = ({ id, nombre, precio, img, stock }) => {
           Terminar compra
         </Link>
       ) : (
-        <ItemCount initial={1} stock={stock} addfunction={amountStock} />
+        <ItemCount initial={1} stock={stock} addToCart={amountStock} />
       )}
     </div>
   );

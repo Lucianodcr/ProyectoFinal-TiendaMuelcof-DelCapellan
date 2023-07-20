@@ -1,19 +1,21 @@
 import { useState } from "react";
 import "./ItemCount.css"
 
-const ItemCount = () => {
-  const [count, setCount] = useState(1);
+const ItemCount = ({stock, initial, addToCart}) => {
+  const [count, setCount] = useState(initial);
 
   const increment = () => {
-    if (count < 10) {
+    if (count < stock) {
       setCount(count + 1);
     }
   };
   const decrement = () => {
-    if (count > 1) {
+    if (count > initial) {
       setCount(count - 1);
     }
   };
+
+ 
 
   return (
     <>
@@ -22,6 +24,12 @@ const ItemCount = () => {
       <span className="rounded-full bg-[#ffffff] font text-black w-40 font-extrabold tamtext" > {count} </span>
       <button onClick={increment} className="rounded-full bg-[#afddb8ff] font text-black w-10 h-10 font-bold tamtext"> + </button>
       </div>
+     
+        <button onClick={()=> addToCart(count)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Agregar al Carrito
+        </button>
+     
+      
     </>
   );
 };
