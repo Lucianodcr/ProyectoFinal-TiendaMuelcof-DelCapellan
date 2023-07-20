@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { useState, useEffect } from "react";
 import ItemCount from "./components/ItemCount/ItemCount";
+import Cart from "./components/Cart/Cart";
 
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
               element={<ItemListContainer />}
             />
             <Route path="/item/:idItem" element={<ItemDetailContainer />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<h2> Sitio en construcción </h2>} />
           </Routes>
         </CartProvider>
