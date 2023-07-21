@@ -25,7 +25,6 @@ const MobileNav = ({
 
   return (
     <>
-      {/*Menu para vista Mobile*/}
       <nav className="bg-[#afddb8ff] lg:hidden fixed w-full bottom-0 left-0 text-2xl py-4 px-8 flex items-center justify-between rounded-tl-xl rounded-tr-xl">
         <Link>
           <FaUser className="text-3xl h-8 w-14 m-3" />
