@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { useState, useEffect } from "react";
 import Cart from "./components/Cart/Cart";
-import Checkout from "./components/Checkout/Checkout";
+import Checkout from "./components/CheckOut/Checkout";
 
 
 const App = () => {

@@ -3,10 +3,7 @@ import { FaAngleDown } from "react-icons/fa6";
 
 import { Link, NavLink } from "react-router-dom";
 
-
 const NavBar = () => {
-  
-
   return (
     <header className="lg:pl-28 grid grid-cols-1 lg:grid-cols-full ">
       <div>
@@ -39,14 +36,13 @@ const NavBar = () => {
 
           <nav className="flex items-center justify-center gap-10 mb-6 text-center">
             <NavLink
-              to="/categoria/masc" 
-              className="py-2 font-semibold uppercase  border-[#afddb8ff] border-b-2" 
-           
+              to="/categoria/masc"
+              className="py-2 font-semibold uppercase  border-[#afddb8ff] border-b-2"
             >
               Perfumes Masculinos
             </NavLink>
             <NavLink
-              to="/categoria/fem" 
+              to="/categoria/fem"
               className="border-b py-2 font-semibold uppercase"
             >
               Perfumes Femeninos
@@ -55,7 +51,6 @@ const NavBar = () => {
         </header>
 
         <div className="flex items-center justify-between lg:px-6">
-          <h2 className="text-xl">Mostrar nombre de filtros aplicados</h2>
           <button className="flex items-center font-semibold gap-4 bg-[#afddb8ff] rounded-full py-2 px-4">
             Aplicar filtro
             <FaAngleDown />

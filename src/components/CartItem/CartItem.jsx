@@ -1,5 +1,5 @@
-import { useContext } from "react"
-import { CartContext } from "../../context/CartContext"
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 
 const CartItem = ({ item, amount }) => {
   const { deleteProduct } = useContext(CartContext);
@@ -17,7 +17,7 @@ const CartItem = ({ item, amount }) => {
       </button>
       <hr className="my-2" />
     </div>
-  )
-}
+  );
+};
 
-export default CartItem
+export default CartItem;

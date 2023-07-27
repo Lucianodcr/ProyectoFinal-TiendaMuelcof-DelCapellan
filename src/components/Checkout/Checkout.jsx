@@ -1,7 +1,10 @@
 import { useState, useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 import { db } from "../../services/config";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDoc, updateDoc, doc } from "firebase/firestore";
+import swal from "sweetalert2";
+
+
 
 const Checkout = () => {
   const [nombre, setNombre] = useState("");
@@ -11,8 +14,9 @@ const Checkout = () => {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [error, setError] = useState("");
   const [orderId, setOrderId] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const { cart, clearCart, total, totalAmount } = useContext(CartContext);
+  const { cart, clearCart, total } = useContext(CartContext);
 
   const formHandler = (e) => {
     e.preventDefault();
@@ -40,18 +44,56 @@ const Checkout = () => {
       email,
     };
 
-    addDoc(collection(db, "ordenes"), order)
-      .then((docRef) => {
-        setOrderId(docRef.id);
+    Promise.all(
+      order.items.map(async (productoOrden) => {
+        const productoRef = doc(db, "inventario", productoOrden.id);
+        const productoDoc = await getDoc(productoRef);
+        const stockActual = productoDoc.data().stock;
+        await updateDoc(productoRef, {
+          stock: stockActual - productoOrden.cantidad,
+        });
       })
-      .catch((error) => {
-        console.log(
-          "A ocurrido un error al crear su orden, intente nuevamente",
-          error
-        );
-        setError(
-          "Se produjo un error al crear la orden, póngase en contacto con el soporte para solucionar el inconveniente"
-        );
+    ).then(() => {
+      addDoc(collection(db, "ordenes"), order)
+        .then((docRef) => {
+          setOrderId(docRef.id);
+          clearCart();
+          setShowSuccessMessage(true);
+        })
+        .catch((error) => {
+          console.log(
+            "A ocurrido un error al crear su orden, intente nuevamente",
+            error
+          );
+          setError(
+            "Se produjo un error al crear la orden, póngase en contacto con el soporte para solucionar el inconveniente"
+          );
+        })
+        .catch((error) => {
+          console.log("No se ha podido actualizar el stock!", error);
+          setError("No se puede actualizar el stock, intente nuevamente");
+        });
+    });
+  };
+  const showSuccessAlert = () => {
+    swal
+      .fire({
+        title: "¡Gracias por tu compra!",
+        text: `Tu número de orden es ${orderId}`,
+        icon: "success",
+        showCancelButton: true, // Mostrar el botón "Seguir comprando"
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "OK",
+        cancelButtonText: "Seguir comprando", // Texto del botón "Seguir comprando"
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          setShowSuccessMessage(false);
+        } else {          
+          setShowSuccessMessage(false);
+       
+        }
       });
   };
 
@@ -59,17 +101,19 @@ const Checkout = () => {
     <div className="max-w-md mx-auto p-4">
       <h2 className="text-3xl mb-4 justify-center flex"> Checkout </h2>
 
-      {cart.map((producto) => (
-        <div key={producto.item.id} className="mb-4">
-          <p>{producto.item.img}</p>
-          <p>
-            {producto.item.nombre} x {producto.amount}
-          </p>
-          <p>{producto.item.precio}</p>
-        </div>
-      ))}
-
-      <hr className="mb-4" />
+      <div className="mb-6">
+        {cart.map((producto) => (
+          <div key={producto.item.id} className="mb-4 flex items-center">
+            <div>
+              <p className="font-semibold">{producto.item.nombre}</p>
+              <p>Cantidad: {producto.amount}</p>
+              <p>Precio: ${producto.item.precio}</p>
+            </div>
+          </div>
+        ))}
+        <hr className="my-4" />
+        <p className="text-xl font-semibold">Total: ${total}</p>
+      </div>
 
       <form onSubmit={formHandler} className="mb-4">
         <div className="mb-4">
@@ -141,17 +185,13 @@ const Checkout = () => {
 
         <button
           type="submit"
-          className="hover:bg-blue-400 bg-[#afddb8ff] hover:text-white font-bold py-2 px-4 rounded-full"
+          className="hover:bg-blue-400 mb-32 bg-[#afddb8ff] hover:text-white font-bold py-2 px-4 rounded-full"
         >
           Finalizar Compra
         </button>
       </form>
-
-      {orderId && (
-        <strong>
-          ¡Gracias por tu compra! Tu número de orden es {orderId}
-        </strong>
-      )}
+      {showSuccessMessage && showSuccessAlert()}
+      
     </div>
   );
 };
