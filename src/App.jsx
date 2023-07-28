@@ -10,6 +10,7 @@ import Cart from "./components/Cart/Cart";
 import Checkout from "./components/Checkout/Checkout";
 
 
+
 const App = () => {
   const [showSideBar, setShowSideBar] = useState(false);
   const [showCartIcon, setShowCartIcon] = useState(true)
